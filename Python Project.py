@@ -1,6 +1,8 @@
 import csv
 import mysql.connector as con
 from datetime import datetime
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
 shoppinglist = []
 mycon = con.connect(host='localhost', user='root', passwd='welcome', database='customer')
@@ -134,7 +136,20 @@ payment = input('Enter Payment method (Cash/Card/UPI): ')
 print('Thank you for shopping')
 print('*' * 35)
 
-with open('Billings.csv', 'a', newline="") as file:
-    mywriter = csv.writer(file, delimiter=',')
-    id = customer[0]
-    mywriter.writerow([id, idlis, total, payment, now])
+# Generate PDF Bill
+pdf_file_name = f'bill_{now.strftime("%H_%M_%S__%d_%m_%Y")}.pdf'  # Using current time and date in the file name
+c = canvas.Canvas(pdf_file_name, pagesize=letter)
+c.drawString(100, 750, 'Bill')
+c.drawString(100, 730, f'Date: {now}')
+c.drawString(100, 710, f'Customer ID: {customer[0]}')
+c.drawString(100, 690, 'Shopping List:')
+y = 670
+for item in shoppinglist:
+    c.drawString(120, y, f'Barcode: {item[0]}, Name: {item[1]}, Cost: {item[2]}')
+    y -= 20
+c.drawString(100, y, f'Total Cost: {total}')
+c.drawString(100, y-20, f'Payment Method: {payment}')
+c.drawString(100, y-40, 'Thank you for shopping!')
+c.save()
+
+print(f'PDF Bill saved as {pdf_file_name}')
