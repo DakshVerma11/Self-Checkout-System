@@ -1,48 +1,47 @@
-# Self Checkout System
+# Billing System with PDF Generation - README
 
-This Python script implements a self-checkout system where customers can add products, update product costs, delete products, and generate bills. The system utilizes CSV files to store product information and MySQL database to store customer information.
+This Python script implements a billing system that allows customers to add products, generate bills, and output the bill in PDF format. The system utilizes CSV files to store product information and MySQL database to store customer information.
 
 ## Requirements
 
 - Python 3.x
 - `mysql-connector-python` library for MySQL database connectivity
+- `reportlab` library for PDF generation
 
-## Setup
-
-1. Install Python 3.x from [python.org](https://www.python.org/downloads/).
-2. Install `mysql-connector-python` using pip:
+You can install the required libraries using pip:
 
 ```bash
-pip install mysql-connector-python
+pip install mysql-connector-python reportlab
 ```
-
-3. Set up a MySQL database named `customer` with a table named `customer` having columns: `ID`, `Name`, and `Password`.
-4. Ensure the MySQL server is running and accessible.
-5. Ensure the script file and CSV files (`products.csv` and `Billings.csv`) are in the same directory.
 
 ## Usage
 
-1. Run the script using Python:
+1. Ensure MySQL server is running and accessible.
+2. Create a MySQL database named `customer` with a table named `customer` having columns: `ID`, `Name`, and `Password`.
+3. Ensure the script file `BillingSystem.py` and CSV files (`products.csv` and `Billings.csv`) are in the same directory.
+4. Run the script using Python:
 
 ```bash
-python self_checkout.py
+python BillingSystem.py
 ```
 
-2. Follow the prompts to navigate through the self-checkout system.
-3. Choose whether you are a new customer or a returning customer.
-4. For new customers, you'll be prompted to enter your details which will be stored in the `customer` table.
-5. For returning customers, you'll be prompted to enter your name and password. If the credentials are correct, access will be granted.
-6. Add products by providing the barcode, name, and cost.
-7. Update product costs by providing the barcode and the new cost.
-8. Delete products by providing the barcode.
-9. After adding all products, review the final list.
-10. Choose to continue or exit.
-11. If you continue, provide the payment method (Cash/Card/UPI).
-12. A bill will be generated and stored in `Billings.csv`.
+5. Follow the prompts to navigate through the billing system:
+   - Choose whether you are a new customer or a returning customer.
+   - For new customers, enter your details which will be stored in the `customer` table.
+   - For returning customers, enter your name and password. If the credentials are correct, access will be granted.
+   - Add products by providing the barcode, name, and cost.
+   - Review the final list of products.
+   - Choose to continue or exit.
+   - Provide the payment method (Cash/Card/UPI).
+6. A PDF bill will be generated and saved in the same directory.
+
+## PDF Bill Naming Convention
+
+The PDF bill file will be named with the format `bill_hour_minute_second__day_month_year.pdf`. For example, if the bill is generated at 10:30:45 on 5th February 2024, the file will be named `bill_10_30_45__05_02_2024.pdf`.
 
 ## Notes
 
-- Make sure to handle errors and edge cases appropriately.
-- Ensure proper security measures for handling passwords and database connections.
+- Ensure proper error handling and validation of user inputs.
 - Customize the database credentials and file paths as per your setup.
+- Adjust the PDF bill layout and styling according to your requirements.
 - The script assumes a simple CSV-based product management system and a MySQL-based customer management system. Adjustments may be needed for different environments.
